@@ -1,0 +1,224 @@
+{
+  "properties": {
+    "jobMode": "CDC",
+    "fullLoadBehavior": "Truncate",
+    "source": {
+      "type": "SqlServerTable",
+      "connectionSettings": {
+        "type": "SqlServer",
+        "externalReferences": {
+          "connection": "70d9027e-8916-4878-85d8-fc85d40ef01a"
+        }
+      }
+    },
+    "destination": {
+      "type": "LakehouseTable",
+      "connectionSettings": {
+        "type": "Lakehouse",
+        "typeProperties": {
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "artifactId": "210c16dc-46de-b44a-462c-de09f12b25a2",
+          "rootFolder": "Tables"
+        }
+      }
+    },
+    "policy": {
+      "timeout": "0.12:00:00",
+      "retry": 0
+    }
+  },
+  "activities": [
+    {
+      "id": "1000c2c3-88b2-4570-872d-251cb22c454d",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "inv",
+            "table": "Product"
+          },
+          "changeDataSettings": {
+            "readMethod": "SnapshotPlusIncremental",
+            "columns": [
+              {
+                "name": "ModifiedAt",
+                "type": "DateTime",
+                "physicalType": "datetime2"
+              }
+            ],
+            "nullWatermarkBehavior": "Skip"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "upsertSettings": {
+            "keys": [
+              "ProductID"
+            ]
+          },
+          "writeBehavior": "Upsert",
+          "datasetSettings": {
+            "table": "Product"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    },
+    {
+      "id": "371933ef-3df1-413d-9f94-27eba46b77d9",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "sales",
+            "table": "Customer"
+          },
+          "changeDataSettings": {
+            "readMethod": "SnapshotPlusIncremental",
+            "columns": [
+              {
+                "name": "ModifiedAt",
+                "type": "DateTime",
+                "physicalType": "datetime2"
+              }
+            ],
+            "nullWatermarkBehavior": "Skip"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "upsertSettings": {
+            "keys": [
+              "CustomerID"
+            ]
+          },
+          "writeBehavior": "Upsert",
+          "datasetSettings": {
+            "table": "Customer"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    },
+    {
+      "id": "dcaf751b-c19c-41fc-8bef-be354553a6d6",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "sales",
+            "table": "SalesOrderHeader"
+          },
+          "changeDataSettings": {
+            "readMethod": "SnapshotPlusIncremental",
+            "columns": [
+              {
+                "name": "ModifiedAt",
+                "type": "DateTime",
+                "physicalType": "datetime2"
+              }
+            ],
+            "nullWatermarkBehavior": "Skip"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "upsertSettings": {
+            "keys": [
+              "SalesOrderID"
+            ]
+          },
+          "writeBehavior": "Upsert",
+          "datasetSettings": {
+            "table": "SalesOrderHeader"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    },
+    {
+      "id": "134dbc80-d542-4b0d-a06c-c3c6dee62e80",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "sales",
+            "table": "SalesOrderLine"
+          },
+          "changeDataSettings": {
+            "readMethod": "SnapshotPlusIncremental",
+            "columns": [
+              {
+                "name": "ModifiedAt",
+                "type": "DateTime",
+                "physicalType": "datetime2"
+              }
+            ],
+            "nullWatermarkBehavior": "Skip"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "upsertSettings": {
+            "keys": [
+              "SalesOrderLineID"
+            ]
+          },
+          "writeBehavior": "Upsert",
+          "datasetSettings": {
+            "table": "SalesOrderLine"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    }
+  ]
+}

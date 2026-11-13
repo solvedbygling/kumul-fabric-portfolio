@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "SM_Kumul_Sales"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "deb6e390-0cb3-bc2c-4ed4-2a537aef096d"
+  }
+}

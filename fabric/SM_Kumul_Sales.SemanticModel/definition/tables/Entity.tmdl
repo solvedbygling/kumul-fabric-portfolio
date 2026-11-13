@@ -1,0 +1,60 @@
+table Entity
+	lineageTag: 8e212337-c1ce-4ae2-b0f5-750311427ca6
+	sourceLineageTag: [dim].[Entity]
+
+	column EntityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 95d373bb-66a6-4152-86bb-0351e8c9d7fe
+		sourceLineageTag: EntityKey
+		summarizeBy: none
+		sourceColumn: EntityKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityCode
+		dataType: string
+		lineageTag: 594d87f6-600a-4e2f-9862-7ec36c868ea3
+		sourceLineageTag: EntityCode
+		summarizeBy: none
+		sourceColumn: EntityCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityName
+		dataType: string
+		lineageTag: d262f12b-70e9-4241-b252-67deeac60f01
+		sourceLineageTag: EntityName
+		summarizeBy: none
+		sourceColumn: EntityName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryName
+		dataType: string
+		lineageTag: 7c2553fd-5cca-4206-8fc2-fb8897d7c0e2
+		sourceLineageTag: CountryName
+		summarizeBy: none
+		sourceColumn: CountryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BaseCurrency
+		dataType: string
+		lineageTag: 3e45d94f-679c-4414-b8c9-c68bf6a83f17
+		sourceLineageTag: BaseCurrency
+		summarizeBy: none
+		sourceColumn: BaseCurrency
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Entity = entity
+		mode: directLake
+		source
+			entityName: Entity
+			schemaName: dim
+			expressionSource: 'DirectLake - WH_Gold'
+

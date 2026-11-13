@@ -1,0 +1,11 @@
+role 'PNG team'
+	modelPermission: read
+
+	tablePermission Customer = [EntityKey] == 2
+
+	tablePermission Entity = [EntityCode] == "PNG"
+
+	tablePermission Warehouse = [EntityKey] == 2
+
+	annotation PBI_Id = 1514ec84bb5e47b093723b2837cc40a4
+

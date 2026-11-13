@@ -1,0 +1,552 @@
+table Sales
+	lineageTag: cc37a3e7-af7e-4bed-b692-6d36bd825c38
+	sourceLineageTag: [fact].[Sales]
+
+	/// Revenue in AUD at monthly FX rate, excluding cancelled orders. Returns reduce revenue.
+	measure 'Sales AUD' = CALCULATE ( SUM ( Sales[SalesAmountAUD] ), KEEPFILTERS ( Sales[OrderStatus] <> "Cancelled" ) )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Sales
+		lineageTag: 8c00aac3-7dd8-462e-9064-fe1314567f98
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+		changedProperty = Description
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Cost of goods in AUD (quantity × current unit cost), excluding cancelled orders.
+	measure 'Cost AUD' = CALCULATE ( SUM ( Sales[CostAmountAUD] ), KEEPFILTERS ( Sales[OrderStatus] <> "Cancelled" ) )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Sales
+		lineageTag: 6a3c19f3-fd9f-427f-97f7-b6be94ac9d4d
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Value of returned goods in AUD, shown as a positive number.
+	measure 'Returns AUD' = CALCULATE ( -[Sales AUD], KEEPFILTERS ( Sales[IsReturn] = TRUE () ) )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Sales
+		lineageTag: 07fbde4e-d510-4d15-8bab-2283ed61ae67
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Count of distinct orders, excluding cancelled.
+	measure Orders = CALCULATE ( DISTINCTCOUNT ( Sales[SalesOrderID] ), KEEPFILTERS ( Sales[OrderStatus] <> "Cancelled" ) )
+		formatString: #,0
+		displayFolder: Measures\Sales
+		lineageTag: 1fcb98ca-b068-4454-a88e-8dafd3c442c2
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	/// Total quantity sold, excluding cancelled orders.
+	measure Units = CALCULATE ( SUM ( Sales[Quantity] ), KEEPFILTERS ( Sales[OrderStatus] <> "Cancelled" ) )
+		formatString: #,0
+		displayFolder: Measures\Sales
+		lineageTag: b780908a-4308-4ae2-b164-85095e41bdd4
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	/// Average AUD revenue per order.
+	measure 'Avg Order Value AUD' = DIVIDE ( [Sales AUD], [Orders] )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Sales
+		lineageTag: 534a11c9-1cb0-4ff7-b885-8f77870f436c
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Sales AUD minus Cost AUD.
+	measure 'Gross Margin AUD' = [Sales AUD] - [Cost AUD]
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Margin
+		lineageTag: 227a4637-4ee5-49b7-bf6f-5101f4a2fd35
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Gross margin as a share of sales.
+	measure 'Gross Margin %' = DIVIDE ( [Gross Margin AUD], [Sales AUD] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Measures\Margin
+		lineageTag: 4d59724b-b1d1-4fa9-849d-f44c2fa527f8
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	/// Sales AUD for the same period last year.
+	measure 'Sales AUD PY' = IF ( ISBLANK ( [Sales AUD] ), BLANK (), CALCULATE ( [Sales AUD], SAMEPERIODLASTYEAR ( 'Date'[Date] ) ) )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Time Intelligence
+		lineageTag: f9343b59-9842-4e25-b6d3-7b1444b514d0
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Change in Sales AUD versus the same period last year.
+	measure 'Sales YoY %' = IF ( [PY Comparable], DIVIDE ( [Sales AUD] - [Sales AUD PY], [Sales AUD PY] ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Measures\Time Intelligence
+		lineageTag: 37bdd31b-755e-4458-b53a-e7b86f4826d6
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	/// Sales AUD year-to-date, Australian financial year (July–June).
+	measure 'Sales AUD FYTD' = TOTALYTD ( [Sales AUD], 'Date'[Date], "6/30" )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Time Intelligence
+		lineageTag: 02017474-0318-4eab-bc1b-d8c655f7a268
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = FormatString
+
+		changedProperty = Description
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Sales AUD by ship date rather than order date.
+	measure 'Sales Shipped AUD' = CALCULATE ( [Sales AUD], USERELATIONSHIP ( Sales[ShippedDateKey], 'Date'[DateKey] ) )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Measures\Operations
+		lineageTag: 70b49aed-bd85-491a-b806-a01fd122a82c
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Share of shipped orders that shipped on or before the required date.
+	measure 'On-Time Ship %' = VAR ShippedOrders = CALCULATE ( DISTINCTCOUNT ( Sales[SalesOrderID] ), NOT ISBLANK ( Sales[IsShippedLate] ) ) VAR OnTimeOrders = CALCULATE ( DISTINCTCOUNT ( Sales[SalesOrderID] ), Sales[IsShippedLate] == FALSE () ) RETURN DIVIDE ( OnTimeOrders, ShippedOrders )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Measures\Operations
+		lineageTag: 116a3036-cc17-4b00-81ee-431b08f469ee
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	/// Average days from order to shipment, per order.
+	measure 'Avg Days to Ship' = AVERAGEX ( VALUES ( Sales[SalesOrderID] ), CALCULATE ( MAX ( Sales[DaysToShip] ) ) )
+		formatString: #,0.0
+		displayFolder: Measures\Operations
+		lineageTag: b6459b99-b295-4fd0-a609-16fac062a12f
+
+		changedProperty = DisplayFolder
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = FormatString
+
+	measure 'PY Comparable' =
+			
+			VAR MonthsCurrent = COUNTROWS ( FILTER ( VALUES ( 'Date'[MonthStart] ), [Sales AUD] > 0 ) )
+			VAR MonthsPrior   = COUNTROWS ( FILTER ( VALUES ( 'Date'[MonthStart] ), [Sales AUD PY] > 0 ) )
+			RETURN HASONEVALUE ( 'Date'[AUFinancialYear] ) && MonthsCurrent = MonthsPrior
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		displayFolder: Measures\Time Intelligence
+		lineageTag: 98caabbf-933e-42a9-ad06-6db058fcfdd6
+
+		changedProperty = Name
+
+		changedProperty = DisplayFolder
+
+	column SalesOrderLineID
+		dataType: int64
+		formatString: 0
+		lineageTag: 60555b65-fe5c-4c86-86c3-f5c010cb9d27
+		sourceLineageTag: SalesOrderLineID
+		summarizeBy: none
+		sourceColumn: SalesOrderLineID
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column SalesOrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: ed666438-684d-4505-b4f8-a1757ba02f05
+		sourceLineageTag: SalesOrderID
+		summarizeBy: none
+		sourceColumn: SalesOrderID
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column OrderNumber
+		dataType: string
+		lineageTag: 9d2c0f21-df13-4828-b204-94b4d091890e
+		sourceLineageTag: OrderNumber
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: e4e0bbc6-d7f5-465b-bb7e-027c9f836ffd
+		sourceLineageTag: LineNumber
+		summarizeBy: none
+		sourceColumn: LineNumber
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column OrderDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 495dcd96-4399-4320-ad29-1cb8f2254c39
+		sourceLineageTag: OrderDateKey
+		summarizeBy: none
+		sourceColumn: OrderDateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column RequiredDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b89d4ebe-0368-49fc-8c32-4971e1c3eecb
+		sourceLineageTag: RequiredDateKey
+		summarizeBy: count
+		sourceColumn: RequiredDateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShippedDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: eecc65fa-c362-4258-92b7-c3ea2bb9e196
+		sourceLineageTag: ShippedDateKey
+		summarizeBy: count
+		sourceColumn: ShippedDateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c6a74c7c-0218-4acf-b00b-e1177a10c09b
+		sourceLineageTag: CustomerKey
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 40dda997-128c-4552-9ba0-13a9825d845e
+		sourceLineageTag: ProductKey
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 08d28c68-1a89-42d0-90ef-1e19a15b2939
+		sourceLineageTag: WarehouseKey
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a9baa39a-90d7-4b7a-969b-2881860dba70
+		sourceLineageTag: EntityKey
+		summarizeBy: none
+		sourceColumn: EntityKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 17433b4f-896e-4187-9120-902c696e6af4
+		sourceLineageTag: OrderStatus
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyCode
+		dataType: string
+		lineageTag: cdde26ef-995b-4e65-9a2c-cdb3b5ab2850
+		sourceLineageTag: CurrencyCode
+		summarizeBy: none
+		sourceColumn: CurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 910fa40f-8100-489c-b112-6601f0113106
+		sourceLineageTag: Quantity
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPriceLocal
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 6bdc7758-3315-4fff-89e6-6d573b33ef19
+		sourceLineageTag: UnitPriceLocal
+		summarizeBy: sum
+		sourceColumn: UnitPriceLocal
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column DiscountPct
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: e2297887-73c9-4d2c-862e-5d2db45a60ab
+		sourceLineageTag: DiscountPct
+		summarizeBy: sum
+		sourceColumn: DiscountPct
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column SalesAmountLocal
+		dataType: double
+		isHidden
+		lineageTag: f2671031-a16f-46fc-9275-111c66fa462d
+		sourceLineageTag: SalesAmountLocal
+		summarizeBy: sum
+		sourceColumn: SalesAmountLocal
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FxRateToAUD
+		dataType: double
+		isHidden
+		lineageTag: 1f7ab92f-4afa-4bbc-b4c3-e7d5e05c2367
+		sourceLineageTag: FxRateToAUD
+		summarizeBy: sum
+		sourceColumn: FxRateToAUD
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesAmountAUD
+		dataType: double
+		isHidden
+		lineageTag: ceb9cc6c-6ef8-4cc5-b6f7-762cf2811e65
+		sourceLineageTag: SalesAmountAUD
+		summarizeBy: sum
+		sourceColumn: SalesAmountAUD
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CostAmountAUD
+		dataType: double
+		isHidden
+		lineageTag: 80c42c95-89a3-403d-bd14-5524cbd166f1
+		sourceLineageTag: CostAmountAUD
+		summarizeBy: sum
+		sourceColumn: CostAmountAUD
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GrossMarginAUD
+		dataType: double
+		isHidden
+		lineageTag: c43985a3-dd63-4522-8139-df0ecf21f863
+		sourceLineageTag: GrossMarginAUD
+		summarizeBy: sum
+		sourceColumn: GrossMarginAUD
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DaysToShip
+		dataType: int64
+		formatString: 0
+		lineageTag: 825b6da1-3b9b-41f0-845c-3a40a643f26b
+		sourceLineageTag: DaysToShip
+		summarizeBy: average
+		sourceColumn: DaysToShip
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column IsShippedLate
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ae48d464-fb5e-406e-81e8-9f86878e3929
+		sourceLineageTag: IsShippedLate
+		summarizeBy: none
+		sourceColumn: IsShippedLate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReturn
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: caaf5832-2c3b-4232-93d6-ae8da9f5ccbb
+		sourceLineageTag: IsReturn
+		summarizeBy: none
+		sourceColumn: IsReturn
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsOrderDateCorrected
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5e4242ea-8632-494b-93bf-b3f08a6575e5
+		sourceLineageTag: IsOrderDateCorrected
+		summarizeBy: none
+		sourceColumn: IsOrderDateCorrected
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsShipDateImputed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e3c59aa7-37b0-454a-b9f8-e6825aab3259
+		sourceLineageTag: IsShipDateImputed
+		summarizeBy: none
+		sourceColumn: IsShipDateImputed
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales = entity
+		mode: directLake
+		source
+			entityName: Sales
+			schemaName: fact
+			expressionSource: 'DirectLake - WH_Gold'
+

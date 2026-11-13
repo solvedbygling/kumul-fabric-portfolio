@@ -1,0 +1,25 @@
+relationship 8518abe0-ca98-ee5f-882d-c7be5181da5c
+	fromColumn: Sales.OrderDateKey
+	toColumn: Date.DateKey
+
+relationship 1d2690a7-7d50-4f34-d604-c37c75f85d1d
+	isActive: false
+	fromColumn: Sales.ShippedDateKey
+	toColumn: Date.DateKey
+
+relationship 1a8ec845-5a7c-08c8-302c-3b556351db2c
+	fromColumn: Sales.CustomerKey
+	toColumn: Customer.CustomerKey
+
+relationship 0b936acf-2893-697c-3e52-88bd39c1dacc
+	fromColumn: Sales.ProductKey
+	toColumn: Product.ProductKey
+
+relationship edc07f03-5d07-f98e-0046-bdf398553835
+	fromColumn: Sales.WarehouseKey
+	toColumn: Warehouse.WarehouseKey
+
+relationship 2ad2b0b9-e686-496d-fc31-41018e9660b0
+	fromColumn: Sales.EntityKey
+	toColumn: Entity.EntityKey
+

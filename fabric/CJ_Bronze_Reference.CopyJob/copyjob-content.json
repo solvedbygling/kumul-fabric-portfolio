@@ -1,0 +1,97 @@
+{
+  "properties": {
+    "jobMode": "Batch",
+    "source": {
+      "type": "SqlServerTable",
+      "connectionSettings": {
+        "type": "SqlServer",
+        "externalReferences": {
+          "connection": "70d9027e-8916-4878-85d8-fc85d40ef01a"
+        }
+      }
+    },
+    "destination": {
+      "type": "LakehouseTable",
+      "connectionSettings": {
+        "type": "Lakehouse",
+        "typeProperties": {
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "artifactId": "210c16dc-46de-b44a-462c-de09f12b25a2",
+          "rootFolder": "Tables"
+        }
+      }
+    },
+    "policy": {
+      "timeout": "0.12:00:00",
+      "retry": 0
+    }
+  },
+  "activities": [
+    {
+      "id": "925c71f3-c86d-4c60-a4fd-87bfe8e2103b",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "inv",
+            "table": "Warehouse"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "partitionOption": "None",
+          "writeBehavior": "Overwrite",
+          "datasetSettings": {
+            "table": "Warehouse"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    },
+    {
+      "id": "d54cbda5-238d-4b4c-a74f-15bccf47e2ea",
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "schema": "ref",
+            "table": "Entity"
+          },
+          "partitionSettings": {
+            "partitionOption": "None"
+          }
+        },
+        "destination": {
+          "partitionOption": "None",
+          "writeBehavior": "Overwrite",
+          "datasetSettings": {
+            "table": "Entity"
+          },
+          "applyVOrder": false,
+          "enableTimestampNtz": false
+        },
+        "enableStaging": false,
+        "translator": {
+          "type": "TabularTranslator"
+        },
+        "typeConversionSettings": {
+          "typeConversion": {
+            "allowDataTruncation": true,
+            "treatBooleanAsNumber": false
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Sales",
+      "measures": [
+        {
+          "name": "Sales YoY Label",
+          "dataType": "Text",
+          "expression": "VAR y = [Sales YoY %] RETURN IF ( ISBLANK ( y ), \"—\", IF ( y >= 0, \"▲ \", \"▼ \" ) & FORMAT ( ABS ( y ), \"0.0%\" ) )",
+          "displayFolder": "Measures\\Time Intelligence",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Sales YoY %"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Sales PY Label",
+          "dataType": "Text",
+          "expression": "IF ( [PY Comparable], \"vs PY \" & FORMAT ( [Sales AUD PY] / 1000000, \"$#,0.0\" ) & \"M\", \"PY incomplete\" )",
+          "displayFolder": "Measures\\Time Intelligence",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "entity": "Sales",
+                "name": "Sales AUD PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Gross Margin % PY",
+          "dataType": "Double",
+          "expression": "IF ( ISBLANK ( [Sales AUD] ), BLANK (), CALCULATE ( [Gross Margin %], SAMEPERIODLASTYEAR ( 'Date'[Date] ) ) )",
+          "displayFolder": "Measures\\Margin",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Sales AUD"
+              },
+              {
+                "entity": "Sales",
+                "name": "Gross Margin %"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Margin Change pts",
+          "dataType": "Double",
+          "expression": "IF ( [PY Comparable], [Gross Margin %] - [Gross Margin % PY] )",
+          "displayFolder": "Measures\\Margin",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "entity": "Sales",
+                "name": "Gross Margin %"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Gross Margin % PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Margin Change Label",
+          "dataType": "Text",
+          "expression": "VAR d = [Margin Change pts] RETURN IF ( ISBLANK ( d ), \"—\", IF ( d >= 0, \"▲ \", \"▼ \" ) & FORMAT ( ABS ( d ) * 100, \"0.0\" ) & \" pts\" )",
+          "displayFolder": "Measures\\Margin",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Margin Change pts"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Margin PY Label",
+          "dataType": "Text",
+          "expression": "IF ( [PY Comparable], \"vs PY \" & FORMAT ( [Gross Margin % PY], \"0.0%\" ), \"PY incomplete\" )",
+          "displayFolder": "Measures\\Margin",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Gross Margin % PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Orders PY",
+          "dataType": "Double",
+          "expression": "IF ( ISBLANK ( [Orders] ), BLANK (), CALCULATE ( [Orders], SAMEPERIODLASTYEAR ( 'Date'[Date] ) ) )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Orders"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Orders YoY %",
+          "dataType": "Double",
+          "expression": "IF ( [PY Comparable], DIVIDE ( [Orders] - [Orders PY], [Orders PY] ) )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "entity": "Sales",
+                "name": "Orders"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Orders PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Orders YoY Label",
+          "dataType": "Text",
+          "expression": "VAR y = [Orders YoY %] RETURN IF ( ISBLANK ( y ), \"—\", IF ( y >= 0, \"▲ \", \"▼ \" ) & FORMAT ( ABS ( y ), \"0.0%\" ) )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Orders YoY %"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Orders PY Label",
+          "dataType": "Text",
+          "expression": "IF ( [PY Comparable], \"vs PY \" & FORMAT ( [Orders PY], \"#,0\" ), \"PY incomplete\" )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Orders PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "AOV PY",
+          "dataType": "Double",
+          "expression": "DIVIDE ( [Sales AUD PY], [Orders PY] )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Sales AUD PY"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "Orders PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "AOV YoY %",
+          "dataType": "Double",
+          "expression": "IF ( [PY Comparable], DIVIDE ( [Avg Order Value AUD] - [AOV PY], [AOV PY] ) )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "entity": "Sales",
+                "name": "Avg Order Value AUD"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "AOV PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "AOV YoY Label",
+          "dataType": "Text",
+          "expression": "VAR y = [AOV YoY %] RETURN IF ( ISBLANK ( y ), \"—\", IF ( y >= 0, \"▲ \", \"▼ \" ) & FORMAT ( ABS ( y ), \"0.0%\" ) )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "AOV YoY %"
+              }
+            ]
+          }
+        },
+        {
+          "name": "AOV PY Label",
+          "dataType": "Text",
+          "expression": "IF ( [PY Comparable], \"vs PY \" & FORMAT ( [AOV PY], \"$#,0\" ), \"PY incomplete\" )",
+          "displayFolder": "Measures\\Sales",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "PY Comparable"
+              },
+              {
+                "schema": "extension",
+                "entity": "Sales",
+                "name": "AOV PY"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Top Category Insight",
+          "dataType": "Text",
+          "expression": "VAR t = TOPN ( 1, ALLSELECTED ( Product[Category] ), [Sales AUD] ) VAR c = MAXX ( t, Product[Category] ) VAR s = DIVIDE ( CALCULATE ( [Sales AUD], t ), CALCULATE ( [Sales AUD], ALLSELECTED ( Product[Category] ) ) ) RETURN IF ( ISBLANK ( s ), BLANK (), c & \" is \" & FORMAT ( s, \"0%\" ) & \" of sales in this selection\" )",
+          "displayFolder": "Measures\\Card helpers",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Sales AUD"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Entity Insight",
+          "dataType": "Text",
+          "expression": "\nVAR MarginAUS =\n    CALCULATE ( [Gross Margin %], Entity[EntityCode] = \"AUS\" )\nVAR MarginPNG =\n    CALCULATE ( [Gross Margin %], Entity[EntityCode] = \"PNG\" )\nVAR OnTimeAUS =\n    CALCULATE ( [On-Time Ship %], Entity[EntityCode] = \"AUS\" )\nVAR OnTimePNG =\n    CALCULATE ( [On-Time Ship %], Entity[EntityCode] = \"PNG\" )\nVAR MarginGapPts = ( MarginPNG - MarginAUS ) * 100   -- positive = PNG higher margin\nVAR OnTimeGapPts = ( OnTimeAUS - OnTimePNG ) * 100   -- positive = PNG ships on time less often\nRETURN\n    IF (\n        ISBLANK ( MarginAUS ) || ISBLANK ( MarginPNG ),\n        BLANK (),\n        \"PNG earns \"\n            & FORMAT ( ABS ( MarginGapPts ), \"0.0\" ) & \" pts \"\n            & IF ( MarginGapPts >= 0, \"more\", \"less\" )\n            & \" margin than AUS but ships on time \"\n            & FORMAT ( ABS ( OnTimeGapPts ), \"0.0\" ) & \" pts \"\n            & IF ( OnTimeGapPts >= 0, \"less\", \"more\" )\n            & \" often\"\n    )",
+          "displayFolder": "Measures\\Card helpers",
+          "references": {
+            "measures": [
+              {
+                "entity": "Sales",
+                "name": "Gross Margin %"
+              },
+              {
+                "entity": "Sales",
+                "name": "On-Time Ship %"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Late Orders",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE ( DISTINCTCOUNT ( Sales[SalesOrderID] ), Sales[IsShippedLate] == TRUE () )",
+          "formatString": "#,0",
+          "displayFolder": "Measures\\Operations"
+        },
+        {
+          "name": "Shipped Orders",
+          "dataType": "Integer",
+          "expression": "\nCALCULATE ( DISTINCTCOUNT ( Sales[SalesOrderID] ), NOT ISBLANK ( Sales[IsShippedLate] ) )",
+          "formatString": "#,0",
+          "displayFolder": "Measures\\Operations"
+        }
+      ]
+    }
+  ]
+}

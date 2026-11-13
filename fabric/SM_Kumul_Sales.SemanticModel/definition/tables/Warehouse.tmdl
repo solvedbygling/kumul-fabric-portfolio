@@ -1,0 +1,55 @@
+table Warehouse
+	lineageTag: d3231adb-729b-49e6-bcfb-de2cb579121d
+	sourceLineageTag: [dim].[Warehouse]
+
+	column WarehouseKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8a909f64-8a3c-42c6-a284-1d3be048dbad
+		sourceLineageTag: WarehouseKey
+		summarizeBy: none
+		sourceColumn: WarehouseKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0d70e5d9-b8ae-4723-917f-c28d7bc35349
+		sourceLineageTag: EntityKey
+		summarizeBy: none
+		sourceColumn: EntityKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column WarehouseName
+		dataType: string
+		lineageTag: 850b9089-927a-4363-bcd0-827ab388e11d
+		sourceLineageTag: WarehouseName
+		summarizeBy: none
+		sourceColumn: WarehouseName
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 6cd512ac-9ee5-45e9-9210-820793100cf9
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Warehouse = entity
+		mode: directLake
+		source
+			entityName: Warehouse
+			schemaName: dim
+			expressionSource: 'DirectLake - WH_Gold'
+

@@ -1,0 +1,140 @@
+table Date
+	lineageTag: d38a3e31-d91c-46d5-88ac-6e33fb6a1c26
+	sourceLineageTag: [dim].[Date]
+	dataCategory: Time
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 56011686-cc81-4ace-9068-90f90552a19f
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: General Date
+		lineageTag: c3a1cdcb-b161-4b80-a030-6bf24ca665a7
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a5278cb-9f2b-4f6d-9f9b-a885d0d1995f
+		sourceLineageTag: Year
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: 8f556eb2-bf6c-439f-b526-83ee395c2cff
+		sourceLineageTag: Quarter
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 2ee65eaa-d61d-4003-9bac-288907dac5e6
+		sourceLineageTag: MonthNumber
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: 366b62f8-3071-4b3c-b9e9-d70e11a8f859
+		sourceLineageTag: MonthName
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: MonthNumber
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthStart
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0ec19c47-a5bb-4ce9-a131-5000e3c8b966
+		sourceLineageTag: MonthStart
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: string
+		lineageTag: 0ba46a79-ec95-43dd-a1f9-7897f572ea36
+		sourceLineageTag: YearMonth
+		summarizeBy: none
+		sourceColumn: YearMonth
+		sortByColumn: MonthStart
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeekNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 54c465f7-41b1-4605-8d82-13c2932aae5c
+		sourceLineageTag: DayOfWeekNumber
+		summarizeBy: none
+		sourceColumn: DayOfWeekNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		lineageTag: db468cb1-ee71-499d-a13a-bee3571ea6ea
+		sourceLineageTag: DayName
+		summarizeBy: none
+		sourceColumn: DayName
+		sortByColumn: DayOfWeekNumber
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e7a5fa38-d17b-4e8d-87fb-17686ae172b5
+		sourceLineageTag: IsWeekend
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column AUFinancialYear
+		dataType: string
+		lineageTag: a6e6b822-e044-4f00-8eaf-2d23f559f8df
+		sourceLineageTag: AUFinancialYear
+		summarizeBy: none
+		sourceColumn: AUFinancialYear
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = entity
+		mode: directLake
+		source
+			entityName: Date
+			schemaName: dim
+			expressionSource: 'DirectLake - WH_Gold'
+

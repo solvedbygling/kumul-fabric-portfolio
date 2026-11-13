@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Kumul Sales Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ca7dbfc3-dc33-b76c-44ed-d3ab4e7dbd02"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "InvokeCopyJob",
+        "typeProperties": {
+          "copyJobId": "f4af2374-3607-a41c-400b-20369153c2a9",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "externalReferences": {
+          "connection": "be586505-2160-4462-97d5-574d12e66b96"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copy transactional tables",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokeCopyJob",
+        "typeProperties": {
+          "copyJobId": "b49bda0a-26f1-83e5-40bc-76f2d16f68fe",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "externalReferences": {
+          "connection": "be586505-2160-4462-97d5-574d12e66b96"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copy reference tables",
+        "dependsOn": []
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "456f7dd1-0fc4-8a08-4739-52966edcc5db",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "externalReferences": {
+          "connection": "affc34e9-fe6a-4253-876a-bda421773bcb"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Silver transform",
+        "dependsOn": [
+          {
+            "activity": "Copy transactional tables",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          },
+          {
+            "activity": "Copy reference tables",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SqlServerStoredProcedure",
+        "typeProperties": {
+          "storedProcedureName": "[etl].[usp_Load_Gold]"
+        },
+        "linkedService": {
+          "name": "WH_Gold",
+          "properties": {
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "artifactId": "1d6d51ec-a861-8c28-4d6c-a7dd130b7136",
+              "endpoint": "ip4wvvjcx3huri57ccel3cc62a-yg23czuy4nxuvieo64g6oy3wza.datawarehouse.fabric.microsoft.com",
+              "workspaceId": "00000000-0000-0000-0000-000000000000"
+            },
+            "annotations": []
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Load gold",
+        "dependsOn": [
+          {
+            "activity": "Silver transform",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

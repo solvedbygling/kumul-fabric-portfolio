@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "CopyJob",
+    "displayName": "CJ_Bronze_Transactional"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f4af2374-3607-a41c-400b-20369153c2a9"
+  }
+}

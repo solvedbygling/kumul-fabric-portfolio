@@ -1,0 +1,104 @@
+table Product
+	lineageTag: f64812c9-86f6-488f-9b9e-1051d694fe4a
+	sourceLineageTag: [dim].[Product]
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9bd6864c-49a3-4a0f-8eac-779a1e9347e7
+		sourceLineageTag: ProductKey
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SKU
+		dataType: string
+		lineageTag: d0f6528f-d47b-4306-8b5f-be588ecd2bf5
+		sourceLineageTag: SKU
+		summarizeBy: none
+		sourceColumn: SKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 93ffc206-e37e-4cf2-9b60-1bce1f6c937a
+		sourceLineageTag: ProductName
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 5394247d-ac3d-4696-b162-a9f03da6701c
+		sourceLineageTag: Category
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column PackSize
+		dataType: string
+		lineageTag: 4f0d605c-0592-4c16-9eb4-423498a6ba13
+		sourceLineageTag: PackSize
+		summarizeBy: none
+		sourceColumn: PackSize
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitCostAUD
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 1855862f-4b66-427d-8476-2c032ffcff42
+		sourceLineageTag: UnitCostAUD
+		summarizeBy: none
+		sourceColumn: UnitCostAUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column ListPriceAUD
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 178cc181-992b-40b6-a72d-ef961f26346e
+		sourceLineageTag: ListPriceAUD
+		summarizeBy: none
+		sourceColumn: ListPriceAUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c21a1faf-0f10-4498-b3f8-b609bcbf8d1c
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPriceMissing
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6cd3cb6b-65ff-4cf3-8937-a91cb94a42bc
+		sourceLineageTag: IsPriceMissing
+		summarizeBy: none
+		sourceColumn: IsPriceMissing
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Product = entity
+		mode: directLake
+		source
+			entityName: Product
+			schemaName: dim
+			expressionSource: 'DirectLake - WH_Gold'
+

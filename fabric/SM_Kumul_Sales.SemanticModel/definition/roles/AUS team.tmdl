@@ -1,0 +1,11 @@
+role 'AUS team'
+	modelPermission: read
+
+	tablePermission Customer = [EntityKey] == 1
+
+	tablePermission Entity = [EntityCode] == "AUS"
+
+	tablePermission Warehouse = [EntityKey] == 1
+
+	annotation PBI_Id = b31b432969024be79d87548dde2dc0bd
+

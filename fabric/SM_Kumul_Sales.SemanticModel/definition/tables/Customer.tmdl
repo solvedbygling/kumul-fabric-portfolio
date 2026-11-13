@@ -1,0 +1,144 @@
+table Customer
+	lineageTag: 5ad5be10-b10a-425f-ae18-a602a2aaf5f7
+	sourceLineageTag: [dim].[Customer]
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 05eef6c8-cb17-458e-8dcb-bfeef24a8009
+		sourceLineageTag: CustomerKey
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9c1cd866-7c74-4c1f-84e0-6c5f1e87eac8
+		sourceLineageTag: CustomerID
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerCode
+		dataType: string
+		lineageTag: f6cd8e71-3019-437a-86c3-6d09ace53b57
+		sourceLineageTag: CustomerCode
+		summarizeBy: none
+		sourceColumn: CustomerCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c513645d-d332-4e39-9171-091dc221f58d
+		sourceLineageTag: EntityKey
+		summarizeBy: none
+		sourceColumn: EntityKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: e6722b00-7ce7-4fe8-a48a-3a545dc73dcd
+		sourceLineageTag: CustomerName
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerType
+		dataType: string
+		lineageTag: eab7d67b-82d6-4d0c-a83c-52f38eb45fde
+		sourceLineageTag: CustomerType
+		summarizeBy: none
+		sourceColumn: CustomerType
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 953cbbf1-ed89-4133-a8b4-a1ab5a807793
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateProvince
+		dataType: string
+		lineageTag: 28bec6da-9a3e-458f-8b23-717d421f24bf
+		sourceLineageTag: StateProvince
+		summarizeBy: none
+		sourceColumn: StateProvince
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreditLimit
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: f7d74b26-7dd6-4627-8a5e-4381b26fe501
+		sourceLineageTag: CreditLimit
+		summarizeBy: none
+		sourceColumn: CreditLimit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 273cdf80-565b-4755-8927-315190c6382e
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0dbf20e3-0874-4abb-a7eb-aadb16daf4e0
+		sourceLineageTag: ValidFrom
+		summarizeBy: none
+		sourceColumn: ValidFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidTo
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5844ca2d-94cf-4e73-959e-5e4bd642e3eb
+		sourceLineageTag: ValidTo
+		summarizeBy: none
+		sourceColumn: ValidTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 44d0c3e6-49a2-4577-89a4-355221f61ecc
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer = entity
+		mode: directLake
+		source
+			entityName: Customer
+			schemaName: dim
+			expressionSource: 'DirectLake - WH_Gold'
+
