@@ -1,5 +1,12 @@
 # Kumul Wholesale: a Microsoft Fabric data platform
 
+
+**Video: a quick tour of the finished Power BI report (1 minute, no sound)**
+
+https://github.com/user-attachments/assets/0a5c28bd-5eb1-4f77-8b42-489be0bf307e
+
+
+
 This project is a full analytics platform built in Microsoft Fabric for Kumul Wholesale, a made-up food and supplies distributor that trades in Australia (in AUD) and Papua New Guinea (in PGK).
 
 Data starts in an on-premises SQL Server database, moves through a lakehouse where it gets cleaned, lands in a warehouse as a star schema, and ends up in a two-page Power BI report.
