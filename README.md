@@ -140,9 +140,21 @@ To test the whole chain and the customer history, I simulated a second day of bu
 
 `SM_Kumul_Sales` uses Direct Lake, which means it reads the warehouse tables directly. It's as fast as an import model, but there's no scheduled refresh to manage.
 
+**Measures organised in folders**
+
+<img src="docs/screenshots/05-model_04_measure-folders.png" alt="Measure folders" width="260">
+
+- Measures are grouped into folders and have descriptions, so they're easy to find and understand.
+
+**Star schema**
+
+![Star schema](docs/screenshots/05-model_03_star-schema.png)
+
 - A standard star schema. Every dimension connects only to the fact table.
 - Two links to the date table, one for order date and one for ship date. The ship date link is switched off by default and only turned on inside the measures that need it.
-- Measures are grouped into folders and have descriptions, so they're easy to find and understand.
+
+**Security and access**
+
 - Two security roles, `AUS team` and `PNG team`, limit each company's staff to their own data. The filter covers companies, customers and warehouses, not just companies. Otherwise staff could still see the other company's customer names in a filter list.
 - The model reads data through a fixed connection, so people viewing the report don't need access to the warehouse itself.
 
