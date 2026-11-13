@@ -232,4 +232,13 @@ data/                fx_rates_monthly.csv (made-up exchange rates)
 docs/screenshots/    Screenshots for each stage
 ```
 
+---
+
+## Other projects
+
+- **[Self-Writing Sales Dashboard](https://github.com/solvedbygling/power-platform-portfolio)**  
+  A Power BI report that writes its own executive summary, using Power Automate and an LLM.
+
+---
+
 *All data is made up. Kumul Wholesale is not a real company.*
