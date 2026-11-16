@@ -1,19 +1,29 @@
-# Kumul Wholesale: a Microsoft Fabric data platform
+<p align="center">
+  <img src="assets/logo-light.png#gh-light-mode-only" alt="Kumul Wholesale logo" width="180">
+  <img src="assets/logo.png#gh-dark-mode-only" alt="Kumul Wholesale logo" width="180">
+</p>
 
+<h1 align="center">Kumul Wholesale: a Microsoft Fabric data platform</h1>
 
-**Video: a quick tour of the finished Power BI report (1 minute, no sound)**
+<p align="center">
+  <b>Microsoft Fabric</b> · SQL Server · On-premises data gateway · Copy jobs and pipelines · Lakehouse · PySpark · Fabric Warehouse (T-SQL) · Direct Lake · DAX · Power BI · Git integration · Claude Code · MCP  
+</p>
+
+<p align="center"><i>Fictional company. All data is synthetic and was generated for this project.</i></p>
+
+---
+
+## Video Demonstration
+
+**A quick tour of the finished Power BI report (1 minute, no sound)**
 
 https://github.com/user-attachments/assets/0a5c28bd-5eb1-4f77-8b42-489be0bf307e
-
-
 
 This project is a full analytics platform built in Microsoft Fabric for Kumul Wholesale, a made-up food and supplies distributor that trades in Australia (in AUD) and Papua New Guinea (in PGK).
 
 Data starts in an on-premises SQL Server database, moves through a lakehouse where it gets cleaned, lands in a warehouse as a star schema, and ends up in a two-page Power BI report.
 
 ![Sales overview](docs/screenshots/06-report_01_sales-overview.png)
-
-**Tools used:** SQL Server, on-premises data gateway, Fabric Copy jobs and pipelines, lakehouses, PySpark notebooks, Fabric Warehouse (T-SQL), Direct Lake semantic model, DAX, Power BI (PBIP), Git integration, and Claude Code with the Power BI authoring plugin.
 
 ---
 
