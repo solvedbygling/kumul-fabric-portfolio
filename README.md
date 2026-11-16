@@ -246,11 +246,18 @@ docs/screenshots/    Screenshots for each stage
 
 ---
 
+*All data is made up. Kumul Wholesale is not a real company.*
+
+---
+
 ## Other projects
+
+- **[PNG Masalais: Funding and Impact Platform](https://github.com/solvedbygling/png-masalais-fabric)**  
+  A Microsoft Fabric platform for a fictional rugby league club with three funders and two currencies: a board pack that writes its own commentary, a one-click refresh pipeline and Activator alerts.
 
 - **[Self-Writing Sales Dashboard](https://github.com/solvedbygling/power-platform-portfolio)**  
   A Power BI report that writes its own executive summary, using Power Automate and an LLM.
 
----
 
-*All data is made up. Kumul Wholesale is not a real company.*
+
+
